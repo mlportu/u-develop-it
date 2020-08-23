@@ -75,25 +75,29 @@ router.put('/candidate/:id', (req, res) => {
     //Data Validation
     const errors = inputCheck(req.body, 'party_id');
         if (errors) {
-             res.status(400).json({ error: errors });
-             return;
+            res.status(400).json({ error: errors });
+        return;
         }
-    //prepare statement
-    const sql = `UPDATE candidates SET party_id = ? WHERE id = ?`;
+    
+    //Prepare 
+    const sql = `UPDATE candidates SET party_id = ? 
+                 WHERE id = ?`;
     const params = [req.body.party_id, req.params.id];
-    //Execute
-    db.run(sql, params, function(err, result){
-        if(err){
-            res.status(400).json({error: err.message});
-            return;
-        }
-        res.json({
-            message: 'success',
-            data: req.body,
-            changes: this.changes
-        });
+  
+    db.run(sql, params, function(err, result) {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+  
+      res.json({
+        message: 'success',
+        data: req.body,
+        changes: this.changes
+      });
     });
-});
+  });
+
 
 //Delete a candidate
 router.delete('/candidate/:id', (req, res) => {
